@@ -2,4 +2,4 @@ import { greet } from "./module";
 
 console.log(greet("world"));
 
-document.getElementById("test").innerText = "hi123";
+document.getElementById("root").innerText = "hi123";
