@@ -17,11 +17,16 @@ module.exports = {
           target: "es2020", // 지원하는 ECMAScript 버전 설정
         },
       },
+      {
+        test: /\.(gif|jpg|png|webp|svg|mp4)$/,
+        type: "asset/resource",
+      },
     ],
   },
   output: {
     filename: "js/[name]-[chunkhash].js",
-    path: path.resolve(__dirname, "assets"),
+    assetModuleFilename: "asset/[hash][ext][query]",
+    path: path.resolve(__dirname, "dirt"),
     clean: true,
   },
   plugins: [
@@ -33,6 +38,7 @@ module.exports = {
     }),
   ],
   devServer: {
-    static: "./assets",
+    static: "./dirt",
+    open: true,
   },
 };
