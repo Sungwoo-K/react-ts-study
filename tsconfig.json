@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "outDir": "./assets/",
+    "module": "ESNext",
+    "target": "ES2020",
+    "lib": ["ESNext", "DOM"],
+    "allowJs": true,
+    "jsx": "react"
+  }
+}
