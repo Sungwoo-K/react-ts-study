@@ -1,4 +1,5 @@
 import Counter from "./components/Counter";
+import Post from "./components/Post";
 import Todo from "./components/Todo";
 
 const App = () => {
@@ -7,6 +8,8 @@ const App = () => {
       <Counter />
       <hr />
       <Todo />
+      <hr />
+      <Post />
     </>
   );
 };

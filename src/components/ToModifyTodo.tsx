@@ -1,17 +1,17 @@
 import { MutableRefObject, useRef } from "react";
 
 interface ModifyTodo {
-  index: number;
+  id: number;
   memo: string;
-  onConfirm: (paylood: { index: number; memo: string }) => void;
+  onConfirm: (paylood: { id: number; memo: string }) => void;
   onCancel: () => void;
 }
 
-const ToModifyTodo = ({ index, memo, onConfirm, onCancel }: ModifyTodo) => {
+const ToModifyTodo = ({ id, memo, onConfirm, onCancel }: ModifyTodo) => {
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
 
   const handleConfirm = () => {
-    onConfirm({ index, memo: inputRef.current.value });
+    onConfirm({ id, memo: inputRef.current.value });
   };
 
   return (

@@ -2,44 +2,40 @@ import { MutableRefObject, useEffect, useRef, useState } from "react";
 import ToModifyTodo from "./ToModifyTodo";
 
 interface TodoItem {
+  id: number;
   memo: string;
 }
 
 const Todo = () => {
   const [todoList, setTodoList] = useState<TodoItem[]>([]);
   const [showModifyTodo, setShowModifyTodo] = useState(false);
-  const [modifyItem, setModifyItem] = useState({ index: 0, memo: "" });
+  const [modifyItem, setModifyItem] = useState({ id: 0, memo: "" });
+  const [sum, setSum] = useState(0);
 
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
 
   const handleAdd = () => {
     const input = inputRef.current;
 
-    setTodoList([{ memo: input.value }, ...todoList]);
+    setTodoList([{ id: sum, memo: input.value }, ...todoList]);
+    setSum(sum + 1);
     input.value = "";
   };
 
-  const handleShowModifyAlert = (index: number) => {
+  const handleShowModifyAlert = (id: number) => {
     setShowModifyTodo(true);
-
-    setModifyItem({ index, memo: todoList[index].memo });
+    const targetItem = todoList.find((item) => item.id === id);
+    setModifyItem({ id, memo: targetItem.memo });
   };
 
   const handleModifyTodoConfirm = ({
-    index,
+    id,
     memo,
   }: {
-    index: number;
+    id: number;
     memo: string;
   }) => {
-    setTodoList(
-      todoList.map((item, idx) => {
-        if (idx === index) {
-          return { index, memo };
-        }
-        return item;
-      })
-    );
+    setTodoList(todoList.map((item) => (item.id === id ? { id, memo } : item)));
     setShowModifyTodo(false);
   };
 
@@ -47,8 +43,8 @@ const Todo = () => {
     setShowModifyTodo(false);
   };
 
-  const handleRemove = (index: number) => {
-    setTodoList(todoList.filter((_, idx) => idx !== index));
+  const handleRemove = (id: number) => {
+    setTodoList(todoList.filter((item) => item.id !== id));
   };
 
   useEffect(() => {
@@ -62,13 +58,13 @@ const Todo = () => {
       {todoList.length === 0 && <p>할 일 목록이 없습니다.</p>}
       {todoList.length > 0 && (
         <ul>
-          {todoList.map((item, index) => (
-            <li key={index}>
+          {todoList.map((item) => (
+            <li key={item.id}>
               {item.memo}
               <button
                 onClick={(e) => {
                   e.stopPropagation;
-                  handleShowModifyAlert(index);
+                  handleShowModifyAlert(item.id);
                 }}
               >
                 수정
@@ -76,7 +72,7 @@ const Todo = () => {
               <button
                 onClick={(e) => {
                   e.stopPropagation;
-                  handleRemove(index);
+                  handleRemove(item.id);
                 }}
               >
                 삭제
@@ -87,7 +83,7 @@ const Todo = () => {
       )}
       {showModifyTodo === true && (
         <ToModifyTodo
-          index={modifyItem.index}
+          id={modifyItem.id}
           memo={modifyItem.memo}
           onConfirm={handleModifyTodoConfirm}
           onCancel={handleModifyTodoCancel}
